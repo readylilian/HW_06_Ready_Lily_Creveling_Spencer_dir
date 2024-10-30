@@ -14,6 +14,8 @@ function HW_06_Ready_Lily_Creveling_Spencer(file_in)
     ccc_labeled = array2table(ccc_pack_mat,'VariableNames',labels);
     ccc_labeled.Properties.RowNames = labels(:);
     ccc_labeled;
+    %Run Part B
+    Part_B(file_in)
 end
 
 % Completes part A of the assignment
@@ -48,21 +50,11 @@ function Part_B(file_in)
     %creates a new cluster for each customer
     clusters = {};
     for customerId = 1:height(data)
-        clusters = [clusters, CustomerCluster(data(customerId,:))];
+        clusters = [clusters, CustomerCluster(data(customerId,:),customerId)];
     end
 
-    %TODO loop
-    
-    %extract the center from all clusters
-    centers = vertcat(clusters.center);
-    %calculate the distances
-    distances = pdist2(centers,centers,'cityblock');
-
-
-
     %loop through all  rows and add them to a cluster
-
-    
+  
     % b. Use the Manhattan distance between cluster centers as the distance metric.
     
     % c. Use the center of mass as the prototype center, the center of mass
@@ -71,6 +63,30 @@ function Part_B(file_in)
     
     % d. Note: At each step of clustering, two clusters are merged together.
     % Track the size of the smallest of the two clusters that are merged together.
+
+    for clusterCount = 1:width(clusters)-1
+        %extract the center from all clusters
+        centers = vertcat(clusters.center);
+    
+        %calculate the distances
+        distances = pdist2(centers,centers,'cityblock');
+    
+        %mask out the diagonla so we dont pick it
+        distances(logical(eye(size(distances)))) = Inf;
+    
+        %pick the id of the 2 cloest customer (can be speed up)
+        min_dist = min(distances,[],'all');
+        [customer_id_left,customer_id_right] = find(distances == min_dist,1);
+    
+        %merge the right customer custer into the left customer cluster
+        clusterLeft = clusters(customer_id_left);
+        clusterRight = clusters(customer_id_right);
+        clusterLeft.mergeCluster(clusterRight);
+        
+        %delete the right cluster as it has been moerged away
+        clusters(customer_id_right) = [];
+    end
+
 end
 
 function Dendrogram(file_in)
