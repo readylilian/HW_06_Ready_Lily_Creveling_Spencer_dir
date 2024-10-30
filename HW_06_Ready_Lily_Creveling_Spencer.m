@@ -2,11 +2,18 @@
 function HW_06_Ready_Lily_Creveling_Spencer(file_in)
     % Turn the csv into a table
     data = readtable(file_in);
+    % remove the Record IDs
+    data = removevars(data,"ID");
     % Run Part A
     ccc_pack_mat = Part_A(data);
-    %run part B
-    Part_B(file_in)
-
+    % Add nice labels to the columns and rows for east comparison
+    absolute = abs(ccc_pack_mat);
+    labels = data.Properties.VariableNames(:);
+    abs_labeled = array2table(absolute,'VariableNames',labels);
+    abs_labeled.Properties.RowNames = labels(:);
+    ccc_labeled = array2table(ccc_pack_mat,'VariableNames',labels);
+    ccc_labeled.Properties.RowNames = labels(:);
+    ccc_labeled;
 end
 
 % Completes part A of the assignment
@@ -14,8 +21,6 @@ end
 % coefficients of all attributes of a given matrix. 
 % Records the values to two decimal points.
 function att_mat = Part_A(data)
-    % remove the Record IDs
-    data = removevars(data,"ID");
     data = table2array(data);
     % Get the cross correlational coefficient of all the attributes
     att_mat = corrcoef(data);
