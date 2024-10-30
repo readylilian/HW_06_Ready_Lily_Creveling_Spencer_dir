@@ -14,8 +14,8 @@ function HW_06_Ready_Lily_Creveling_Spencer(file_in)
     ccc_labeled = array2table(ccc_pack_mat,'VariableNames',labels);
     ccc_labeled.Properties.RowNames = labels(:);
     ccc_labeled;
-    %Run Part B
-    Part_B(file_in)
+    %create dendogram
+    dendogram = Dendrogram(file_in);
 end
 
 % Completes part A of the assignment
@@ -35,6 +35,11 @@ end
 % using the manhattan distance and the center of mass to determine distance
 % and linkage
 function Part_B(file_in)
+    
+
+end
+
+function dendrogram = Dendrogram(file_in)
     % Cluster the guests into groups as follows:
     % a. At the start of agglomerative clustering, assign each record to 
     % its own cluster prototype. Suppose we have 1000+ records. So, you 
@@ -86,10 +91,5 @@ function Part_B(file_in)
         %delete the right cluster as it has been moerged away
         clusters(customer_id_right) = [];
     end
-
-end
-
-function Dendrogram(file_in)
-    figure;
-
+    dendrogram = clusters(1);
 end
