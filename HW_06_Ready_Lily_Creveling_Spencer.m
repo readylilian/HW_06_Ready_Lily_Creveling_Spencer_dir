@@ -13,16 +13,14 @@ function HW_06_Ready_Lily_Creveling_Spencer(file_in)
     abs_labeled.Properties.RowNames = labels(:);
     ccc_labeled = array2table(ccc_pack_mat,'VariableNames',labels);
     ccc_labeled.Properties.RowNames = labels(:);
-    
+    ccc_labeled;
 end
 
 % Completes part A of the assignment
 % Uses a package/built in command to funs the cross-correlation
-% coefficients of all attributes. Records the values to two decimal points.
-
-function att_mat = Part_A(data)
 % coefficients of all attributes of a given matrix. 
 % Records the values to two decimal points.
+function att_mat = Part_A(data)
     data = table2array(data);
     % Get the cross correlational coefficient of all the attributes
     att_mat = corrcoef(data);
@@ -53,5 +51,5 @@ end
 
 function Dendrogram(file_in)
     figure;
-    
+
 end
