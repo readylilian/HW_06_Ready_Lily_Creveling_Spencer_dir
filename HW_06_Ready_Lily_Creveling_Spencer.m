@@ -1,13 +1,33 @@
 % Runs all parts of the assignment on a given file
 function HW_06_Ready_Lily_Creveling_Spencer(file_in)
-    ccc_pack_mat = Part_A(file_in);
+    % Turn the csv into a table
+    data = readtable(file_in);
+    % remove the Record IDs
+    data = removevars(data,"ID");
+    % Run Part A
+    ccc_pack_mat = Part_A(data);
+    % Add nice labels to the columns and rows for east comparison
+    absolute = abs(ccc_pack_mat);
+    labels = data.Properties.VariableNames(:);
+    abs_labeled = array2table(absolute,'VariableNames',labels);
+    abs_labeled.Properties.RowNames = labels(:);
+    ccc_labeled = array2table(ccc_pack_mat,'VariableNames',labels);
+    ccc_labeled.Properties.RowNames = labels(:);
+    
 end
 
 % Completes part A of the assignment
 % Uses a package/built in command to funs the cross-correlation
 % coefficients of all attributes. Records the values to two decimal points.
 
-function att_mat = Part_A(file_in)
+function att_mat = Part_A(data)
+% coefficients of all attributes of a given matrix. 
+% Records the values to two decimal points.
+    data = table2array(data);
+    % Get the cross correlational coefficient of all the attributes
+    att_mat = corrcoef(data);
+    % Round to the nearest 2 decimal points
+    att_mat = round(att_mat,2);
 end
 
 % Completes part B of the assignment
