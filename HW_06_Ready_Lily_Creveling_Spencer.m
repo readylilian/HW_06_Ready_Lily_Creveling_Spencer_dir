@@ -4,6 +4,8 @@ function HW_06_Ready_Lily_Creveling_Spencer(file_in)
     data = readtable(file_in);
     % Run Part A
     ccc_pack_mat = Part_A(data);
+    %run part B
+    Part_B(file_in)
 
 end
 
@@ -31,6 +33,30 @@ function Part_B(file_in)
     % its own cluster prototype. Suppose we have 1000+ records. So, you 
     % start with 1000-plus clusters and 1000-plus prototypes of those 
     % clusters.
+    
+    %read in file
+    data = readtable(file_in);
+    % remove the Record IDs
+    data = removevars(data,"ID");
+    data = table2array(data);
+
+    %creates a new cluster for each customer
+    clusters = {};
+    for customerId = 1:height(data)
+        clusters = [clusters, CustomerCluster(data(customerId,:))];
+    end
+
+    %TODO loop
+    
+    %extract the center from all clusters
+    centers = vertcat(clusters.center);
+    %calculate the distances
+    distances = pdist2(centers,centers,'cityblock');
+
+
+
+    %loop through all  rows and add them to a cluster
+
     
     % b. Use the Manhattan distance between cluster centers as the distance metric.
     
