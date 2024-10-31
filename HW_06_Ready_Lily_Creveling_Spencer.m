@@ -49,10 +49,6 @@ function Part_B(data)
         clusters = [clusters, CustomerCluster(data(customerId,:),customerId)];
     end
 
-    % creates a rough dendrogram based off the clusters. this was used for
-    % part b of the writeup and does not actually need to be in the final
-    % assignment if we change how Dendrogram works
-    Dendrogram(clusters);
     %loop through all  rows and add them to a cluster
   
     % And use the distance between these centers as the linkage method.
@@ -95,8 +91,11 @@ function Part_B(data)
         
         %delete the right cluster as it has been moerged away
         clusters(customer_id_right) = [];
+        % Create a dendrogram with the last 20 clusters
+        if size(clusters,2) == 20
+            Dendrogram(clusters);
+        end
     end
-    clusters(1);
     % Find the centroids of the four clusters
     parent = clusters(1).children;
     cent_one = Find_Centroid(parent{1,1}.children{1,1});
@@ -122,13 +121,16 @@ function centroid = Find_Centroid(cluster)
     centroid = cluster.members(smallest(:,1),:); 
 end
 
-% THIS IS A ROUGH DENDROGRAM, IT HAS THE THE THREE SPLIT THING
-% EVERYTHING IN HERE CAN BE DELETED
+%Creates a dendrogram with the last 20 clusters, and returns the dendrogram
 function dendro = Dendrogram(clusters)
     figure;
+    % Use the centers of the clusters
     centers = vertcat(clusters.center);
+    % Use the manhattan distance
     distances = pdist2(centers,centers,'cityblock');
     link = linkage(distances,"centroid");
+    % reorder the leaves so that our graph looks nice :)
     leaforder = optimalleaforder(link,distances);
-    dendro = dendrogram(link,20,Reorder=leaforder);
+    % create the dendrogram
+    dendro = dendrogram(link,Reorder=leaforder);
 end
