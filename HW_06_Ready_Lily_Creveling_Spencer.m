@@ -13,10 +13,9 @@ function HW_06_Ready_Lily_Creveling_Spencer(file_in)
     abs_labeled.Properties.RowNames = labels(:);
     ccc_labeled = array2table(ccc_pack_mat,'VariableNames',labels);
     ccc_labeled.Properties.RowNames = labels(:);
-    % Run Part A
+    % Run Part B
     data = table2array(data);
     Part_B(data);
-    %create dendogram
 end
 
 % Completes part A of the assignment
